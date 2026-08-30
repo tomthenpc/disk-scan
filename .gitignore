@@ -1,0 +1,33 @@
+# Build artifacts
+*.exe
+*.dll
+*.msi
+*.zip
+*.tar
+*.tar.gz
+
+# Reports generated at runtime
+report/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.old
+.env
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor / IDE files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# User data
+# NOTE: The repository tracks placeholder credentials.txt and example ip-list.txt.
+#       Do NOT commit files that contain real passwords or internal IP ranges.

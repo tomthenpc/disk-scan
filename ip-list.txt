@@ -1,0 +1,11 @@
+# IP list - one IP per line
+# Lines starting with # are comments and will be ignored
+# Example:
+# 192.168.1.10
+# 192.168.1.11
+# 172.16.0.100
+
+# --- Add your IPs below ---
+192.168.1.10
+192.168.1.11
+192.168.1.12

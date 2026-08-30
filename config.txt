@@ -1,0 +1,32 @@
+# Disk Scan - 运行配置 / Runtime Configuration
+# 本文件无敏感信息，可放心编辑。
+# This file contains no secrets, safe to edit.
+#
+# 说明 / Description:
+#   每项一行，格式：键=值
+#   One setting per line, format: Key=Value
+#   # 开头为注释，自动忽略
+#   Lines starting with # are comments.
+#   缺少的项使用默认值。
+#   Missing keys use default values.
+
+# 并发线程数（1=串行，大于 1=多线程）
+# 数值无硬上限，但线程数越大，同时发起的网络连接越多。
+# 生产环境建议 2-4；内网稳定可 10-20；超过 50 可能冲击网络。
+MaxThreads=2
+
+# Ping 超时（毫秒）
+PingTimeout=1000
+
+# 串行模式下设备间隔（毫秒）
+# 仅 MaxThreads=1 时生效。
+SeqDelay=500
+
+# 并行模式下每提交一个 IP 到线程池的间隔（毫秒）
+# 可避免大线程数时瞬间同时发起大量连接。设为 0 则无间隔。
+ThreadDelay=50
+
+# 磁盘使用率阈值（%）
+# Thresholds 可写为一行三个数：Warn,High,Critical
+# 或分别写 ThresholdWarn、ThresholdHigh、ThresholdCritical
+Thresholds=50,70,85

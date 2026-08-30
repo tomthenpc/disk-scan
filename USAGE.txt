@@ -1,0 +1,215 @@
+==========================================
+  Disk Scan - 使用指南 / Usage Guide
+==========================================
+
+  本文件与运行时所需的配置文件（credentials.txt、ip-list.txt、config.txt）
+  均在同一目录。
+
+  This file is in the root folder. The runtime files (credentials.txt, ip-list.txt, config.txt)
+  are in the same folder.
+  完整文档请阅读 README.md（中文）或 README_EN.md（英文）。
+
+  This is a quick-start guide for the downloaded package.
+  For full documentation, see README.md (Chinese) or README_EN.md (English).
+
+------------------------------------------
+  3 步运行
+------------------------------------------
+
+  1. 配置凭据
+
+     唯一方式：编辑 credentials.txt
+     项目已自带 credentials.txt（占位符），用记事本打开填入真实密码。
+     一行一组凭据，格式：用户名,密码
+
+       administrator,你的密码
+       admin,备用密码
+
+     # 开头为注释，自动忽略。支持分隔符：,  :  |  tab
+
+     无密码设备：
+       administrator,
+
+     密码带空格：
+       administrator," my password "
+
+     注意：scan.ps1 不包含内置凭据，只从 credentials.txt 读取。
+
+  2. 编辑 IP 列表
+
+     一行一个 IP，# 开头为注释（自动忽略）：
+
+       192.168.1.10
+       192.168.1.11
+       # 这行是注释，不会扫描
+
+  3. 运行
+
+     右键 scan.ps1 → "用 PowerShell 运行"
+     或命令行：.\scan.ps1
+
+------------------------------------------
+  如果提示"禁止运行脚本"
+------------------------------------------
+
+  执行一次（仅需一次）：
+    Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+------------------------------------------
+  配置参数
+------------------------------------------
+
+  编辑 config.txt（无敏感信息）：
+    MaxThreads       1=串行，大于1=多线程；建议 2-10，超过 50 可能冲击网络
+    PingTimeout      Ping 超时毫秒数（默认 1000）
+    SeqDelay         串行模式设备间隔毫秒数（默认 500，仅串行生效）
+    ThreadDelay      并行模式下每个 IP 的发射间隔毫秒数（默认 50；设为 0 则无间隔）
+    Thresholds       阈值，格式：50,70,85
+
+  示例：
+    MaxThreads=2
+    PingTimeout=1000
+    SeqDelay=500
+    ThreadDelay=50
+    Thresholds=50,70,85
+
+  凭据仍需在 credentials.txt 中配置，保持不变。
+
+------------------------------------------
+  输出文件
+------------------------------------------
+
+  report/disk-report-yyMMdd_HHmmss.csv
+  → 精确到秒；同一秒内再次运行会自动追加 -N 序号
+  → UTF-8 BOM 编码，Excel 直接打开不乱码
+  → 按严重程度排序，最严重的在最上面
+
+------------------------------------------
+  磁盘等级（所有盘统一）
+------------------------------------------
+
+  [OK]        < 50%        健康
+  [WARN]      50% - 70%    需关注
+  [HIGH]      70% - 85%    高占用
+  [CRITICAL]  >= 85%       严重
+
+------------------------------------------
+  状态说明
+------------------------------------------
+
+  ONLINE     设备在线，已获取磁盘信息
+  OFFLINE    Ping 不通（关机或网络不通）
+  AUTH_FAIL  Ping 通但凭据全部失败
+
+------------------------------------------
+  前提条件
+------------------------------------------
+
+  - Windows + PowerShell 5.1 或更高
+  - 目标设备已开启管理共享（C$/D$ 等）
+  - 网络端口 445 可达
+  - 拥有目标设备的管理员凭据
+
+
+==========================================
+  English
+==========================================
+
+------------------------------------------
+  3 Steps to Run
+------------------------------------------
+
+  1. Configure credentials
+
+     Only way: Edit credentials.txt
+     The project includes credentials.txt with placeholders.
+     Open it in Notepad and fill in your real passwords.
+     One credential per line: username,password
+
+       administrator,your_password
+       admin,backup_password
+
+     Lines starting with # are comments. Supported separators: , : | tab
+
+     No password:
+       administrator,
+
+     Password with spaces:
+       administrator," my password "
+
+     Note: scan.ps1 has no built-in credentials. It reads credentials.txt only.
+
+  2. Edit ip-list.txt
+
+     One IP per line. Lines starting with # are comments:
+
+       192.168.1.10
+       192.168.1.11
+       # This line is a comment
+
+  3. Run
+
+     Right-click scan.ps1 -> "Run with PowerShell"
+     Or command line: .\scan.ps1
+
+------------------------------------------
+  If "running scripts is disabled"
+------------------------------------------
+
+  Run this once (one-time only):
+    Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+------------------------------------------
+  Configuration
+------------------------------------------
+
+  Edit config.txt (no secrets):
+    MaxThreads       1=sequential, >1=multi-thread; recommend 2-10, >50 may stress network
+    PingTimeout      Ping timeout in ms (default 1000)
+    SeqDelay         Sequential delay in ms (default 500, only in sequential)
+    ThreadDelay      Parallel mode launch interval in ms (default 50; set to 0 for no delay)
+    Thresholds       Thresholds, e.g. 50,70,85
+
+  Example:
+    MaxThreads=2
+    PingTimeout=1000
+    SeqDelay=500
+    ThreadDelay=50
+    Thresholds=50,70,85
+
+  Credentials still go in credentials.txt.
+
+------------------------------------------
+  Output
+------------------------------------------
+
+  report/disk-report-yyMMdd_HHmmss.csv
+  -> Auto-creates report/ folder
+  -> UTF-8 BOM, opens in Excel without garbling
+  -> Sorted by severity, most critical first
+
+------------------------------------------
+  Disk Levels (all drives)
+------------------------------------------
+
+  [OK]        < 50%        Healthy
+  [WARN]      50% - 70%    Needs attention
+  [HIGH]      70% - 85%    High usage
+  [CRITICAL]  >= 85%       Critical
+
+------------------------------------------
+  Status
+------------------------------------------
+
+  ONLINE     Online, disk info retrieved
+  OFFLINE    Ping failed (device off or unreachable)
+  AUTH_FAIL  Ping OK but all credentials failed
+
+------------------------------------------
+  Requirements
+------------------------------------------
+
+  - Windows + PowerShell 5.1 or later
+  - Target: SMB admin shares enabled (C$, D$)
+  - Network: SMB port 445 reachable
+  - Admin credentials for target devices
